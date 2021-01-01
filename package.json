@@ -1,0 +1,21 @@
+{
+  "name": "fractal-todo",
+  "version": "1.0.0",
+  "description": "assignment for fractab",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Debayan Debnath",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "concurrently": "^5.3.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.9",
+    "uuid": "^8.3.2"
+  }
+}
