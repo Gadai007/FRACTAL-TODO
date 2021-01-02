@@ -32,7 +32,7 @@ userSchema.statics.authenticate = async function (email, password) {
     if(user){
         const auth = await bcrypt.compare(password, user.password)
         if(auth){
-            return auth
+            return user
         }else{
             return false
         }
