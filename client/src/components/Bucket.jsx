@@ -4,6 +4,7 @@ import { createBucket, getBuckets } from "./helper/coreapicalls";
 import { isAuthenticate } from "../auth/index";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 toast.configure();
 
@@ -89,7 +90,7 @@ const Bucket = () => {
                     className="btn btn-primary"
                     type="button"
                   >
-                    {bucket.name}
+                    <Link to={`/${bucket._id}`} className='text-light'>{bucket.name}</Link>
                   </button>
                 </div>
               );
