@@ -1,5 +1,6 @@
+
 export const signup = (user) => {
-    return fetch('/api/signin', {
+    return fetch('/api/signup', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -13,7 +14,7 @@ export const signup = (user) => {
 
 
 export const signin = (user) => {
-    return fetch('/api/signup', {
+    return fetch('/api/signin', {
         method: 'POST',
         headers: {
             Accept: 'application/json',

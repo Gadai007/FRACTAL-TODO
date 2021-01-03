@@ -1,24 +1,101 @@
-import React from 'react'
-import signinImg from '../images/signin.png'
+import React, { useState } from "react";
+import signinImg from "../images/signin.png";
+import { Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import { signin, authenticate, isAuthenticate } from "../auth/index";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signin = () => {
-    return (
-        <div className="row">
-            <div className="col-6">
-                <img src={signinImg} alt='signin' />
-            </div>
-            <div className="col-6">
-                <form>
-                    <h2 className='fs-1'>Sign In</h2>
-                    <label for="email" className="visually-hidden">Email address</label>
-                    <input type="email" id="email" name='email' class="form-control" placeholder="Email address" required autofocus />
-                    <label for="password" className="visually-hidden">Password</label>
-                    <input type="password" id="password" name='password' class="form-control" placeholder="Password" required />
-                    <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                </form>
-            </div>
-        </div>
-    )
-}
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    error: "",
+    redirect: false,
+  });
 
-export default Signin
+  const { user } = isAuthenticate()
+
+  const onChangeHandler = (event) => {
+    const { name, value } = event.target;
+    setValues((preValues) => {
+      return { ...preValues, [name]: value };
+    });
+  };
+
+  const onError = (error) => {
+    toast.error(`${error}`);
+  };
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    const { email, password } = values;
+    signin({ email, password })
+      .then((response) => {
+        if (response.error) {
+          setValues((preValues) => {
+            return { ...preValues, error: response.error };
+          });
+          onError(response.error);
+        } else {
+          authenticate( response, () => {
+            setValues((preValues) => {
+                return {
+                  ...preValues,
+                  email: "",
+                  password: "",
+                  error: "",
+                  redirect: true,
+                };
+              });
+          })
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const performRedirect = () => {
+      if(values.redirect){
+          if(user){
+              return <Redirect to='/bucket'/>
+          }
+      }
+  }
+
+  return (
+    <div className="row">
+      <div className="col-6">
+        <img src={signinImg} alt="signin" />
+      </div>
+      <div className="col-6">
+        <form>
+          <h2 className="fs-1">Sign In</h2>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={values.email}
+            onChange={onChangeHandler}
+            className="form-control"
+            placeholder="Email address"
+            required
+            autoFocus
+          />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={values.password}
+            onChange={onChangeHandler}
+            className="form-control"
+            placeholder="Password"
+            required
+          />
+          <button className="w-100 btn btn-lg btn-primary" onClick={onSubmitHandler}>Sign in</button>
+        </form>
+        {performRedirect()}
+      </div>
+    </div>
+  );
+};
+
+export default Signin;
