@@ -25,6 +25,23 @@ img{
   width: 90%;
 }
 
+.create{
+  margin: auto;
+}
+
+.create-btn{
+  margin: auto;
+}
+
+.bucket{
+  margin: 40px auto 40px;
+  text-align: center;
+  font-size: 3rem;
+}
+
+.buckets{
+  margin-left: 180px;
+}
 
 .nav{
     height: 4.5rem;

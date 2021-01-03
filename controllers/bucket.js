@@ -12,7 +12,7 @@ const getBucketById = async (req, res, next, id) => {
 
 const getBuckets = async (req, res) => {
 
-    const buckets = await Bucket.find().populate('user', '_id name')
+    const buckets = await Bucket.find({ user: { _id: req.profile._id }}).populate('user', '_id name')
     if (buckets) {
         res.status(200).json(buckets)
     } else {
