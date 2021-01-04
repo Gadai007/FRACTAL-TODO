@@ -137,11 +137,11 @@ const Todo = (props) => {
               return (
                 <div key={todo._id} className="d-grid col-6 mb-2 create-btn">
                   <span className="btn btn-primary">
-                    <input type="checkbox" /> {todo.todo}
-                    {"  "}
-                    <span className="fas fa-pen ps-5" onClick={() => onUpdateHandler(todo._id)}></span>
+                    <input type="checkbox" /> <span className='pe-5'>{todo.todo}</span>
+                    
+                    <span className="fas fa-pen p-1" onClick={() => onUpdateHandler(todo._id)}></span>
                     <span
-                      className="fas fa-trash-alt ps-3"
+                      className="fas fa-trash-alt p-1"
                       onClick={() => onDeleteHandler(todo._id)}
                     ></span>
                   </span>
