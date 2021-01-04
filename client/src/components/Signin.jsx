@@ -58,6 +58,8 @@ const Signin = () => {
           if(user){
               return <Redirect to='/bucket'/>
           }
+      }else{
+        <Redirect to='/'/>
       }
   }
 
