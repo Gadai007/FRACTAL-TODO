@@ -5,7 +5,7 @@ import {
   getTodos,
   deleteTodo,
   getABucket,
-  getATodo
+  getATodo,
 } from "./helper/coreapicalls";
 import { isAuthenticate } from "../auth/index";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ const Todo = (props) => {
   const [todos, setTodos] = useState([]);
   const [bucketName, setBucketName] = useState({});
   const [todo, setTodo] = useState({
-    todo: ''
+    todo: "",
   });
   const [reload, setReload] = useState(false);
 
@@ -52,9 +52,9 @@ const Todo = (props) => {
   }, [reload]);
 
   const onChangeHandler = (event) => {
-    const { name ,value } = event.target;
-    setTodo(preValue => {
-      return {...preValue, [name]: value}
+    const { name, value } = event.target;
+    setTodo((preValue) => {
+      return { ...preValue, [name]: value };
     });
   };
 
@@ -69,8 +69,8 @@ const Todo = (props) => {
         if (response.error) {
           onError(response.error);
         } else {
-          setTodo(preValue => {
-            return {...preValue, todo: ''}
+          setTodo((preValue) => {
+            return { ...preValue, todo: "" };
           });
           setReload(!reload);
         }
@@ -91,12 +91,14 @@ const Todo = (props) => {
   };
 
   const onUpdateHandler = (todoId) => {
-    getATodo(user.id, token, props.match.params.bucketId, todoId).then(response => {
-      setTodo(preValue => {
-        return {...preValue, todo: response.todo}
-      })
-    })
-    onDeleteHandler(todoId)
+    getATodo(user.id, token, props.match.params.bucketId, todoId).then(
+      (response) => {
+        setTodo((preValue) => {
+          return { ...preValue, todo: response.todo };
+        });
+      }
+    );
+    onDeleteHandler(todoId);
   };
 
   const bucketForm = () => {
@@ -135,16 +137,21 @@ const Todo = (props) => {
           ) : (
             todos.map((todo) => {
               return (
-                <div key={todo._id} className="d-grid col-6 mb-2 create-btn">
-                  <span className="btn btn-primary">
-                    <input type="checkbox" /> <span className='pe-5'>{todo.todo}</span>
-                    
-                    <span className="fas fa-pen pe-5" onClick={() => onUpdateHandler(todo._id)}></span>
+                <div key={todo._id} className="d-grid col-7 mb-2 create-btn">
+                  <div className='container'>
+                    <span className="btn btn-primary m-2 pe-5">
+                      <input type="checkbox" />{" "}
+                      <span className="pe-5">{todo.todo}</span>
+                    </span>
                     <span
-                      className="fas fa-trash-alt pe-2"
+                        className="fas fa-pen me-2 d-inline btn btn-primary"
+                        onClick={() => onUpdateHandler(todo._id)}
+                      ></span>
+                    <span
+                      className="fas fa-trash-alt me-2 d-inline btn btn-primary"
                       onClick={() => onDeleteHandler(todo._id)}
                     ></span>
-                  </span>
+                  </div>
                 </div>
               );
             })
