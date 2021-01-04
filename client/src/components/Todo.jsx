@@ -139,9 +139,9 @@ const Todo = (props) => {
                   <span className="btn btn-primary">
                     <input type="checkbox" /> <span className='pe-5'>{todo.todo}</span>
                     
-                    <span className="fas fa-pen p-1" onClick={() => onUpdateHandler(todo._id)}></span>
+                    <span className="fas fa-pen pe-5" onClick={() => onUpdateHandler(todo._id)}></span>
                     <span
-                      className="fas fa-trash-alt p-1"
+                      className="fas fa-trash-alt pe-2"
                       onClick={() => onDeleteHandler(todo._id)}
                     ></span>
                   </span>
