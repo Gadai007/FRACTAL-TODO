@@ -13,7 +13,7 @@ const Signin = () => {
     redirect: false,
   });
 
-  const { user } = isAuthenticate()
+  const { user } = isAuthenticate();
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -37,31 +37,66 @@ const Signin = () => {
           });
           onError(response.error);
         } else {
-          authenticate( response, () => {
+          authenticate(response, () => {
             setValues((preValues) => {
-                return {
-                  ...preValues,
-                  email: "",
-                  password: "",
-                  error: "",
-                  redirect: true,
-                };
-              });
-          })
+              return {
+                ...preValues,
+                email: "",
+                password: "",
+                error: "",
+                redirect: true,
+              };
+            });
+          });
         }
       })
       .catch((err) => console.log(err));
   };
 
+  const signunForm = () => {
+    return (
+      <form>
+        <h2 className="fs-1">Sign In</h2>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={values.email}
+          onChange={onChangeHandler}
+          className="form-control"
+          placeholder="Email address"
+          required
+          autoFocus
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={values.password}
+          onChange={onChangeHandler}
+          className="form-control"
+          placeholder="Password"
+          required
+        />
+        <button
+          className="w-100 btn btn-lg btn-primary"
+          onClick={onSubmitHandler}
+        >
+          Sign in
+        </button>
+      </form>
+    );
+  };
+
   const performRedirect = () => {
-      if(values.redirect){
-          if(user){
-              return <Redirect to='/bucket'/>
-          }
-      }else{
-        <Redirect to='/'/>
+    if (values.redirect) {
+      if (user) {
+        return <Redirect to="/bucket" />;
       }
-  }
+    } else {
+      <Redirect to="/" />;
+    }
+  };
 
   return (
     <div className="row">
@@ -69,33 +104,8 @@ const Signin = () => {
         <img src={signinImg} alt="signin" />
       </div>
       <div className="col-6">
-        <form>
-          <h2 className="fs-1">Sign In</h2>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={values.email}
-            onChange={onChangeHandler}
-            className="form-control"
-            placeholder="Email address"
-            required
-            autoFocus
-          />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={values.password}
-            onChange={onChangeHandler}
-            className="form-control"
-            placeholder="Password"
-            required
-          />
-          <button className="w-100 btn btn-lg btn-primary" onClick={onSubmitHandler}>Sign in</button>
-        </form>
-        {performRedirect()}
-      </div>
+        {signunForm()}
+        {performRedirect()}</div>
     </div>
   );
 };
