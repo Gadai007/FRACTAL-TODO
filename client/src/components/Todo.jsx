@@ -73,6 +73,18 @@ const Todo = (props) => {
     );
   };
 
+  const onDeleteHandler = (todoId) => {
+    deleteTodo(user.id, token, props.match.params.bucketId, todoId).then(
+      (response) => {
+        if (response.error) {
+          console.log(response.error);
+        } else {
+          setReload(!reload)
+        }
+      }
+    );
+  };
+
   const bucketForm = () => {
     return (
       <form className="create">
@@ -110,7 +122,10 @@ const Todo = (props) => {
             todos.map((todo) => {
               return (
                 <div key={todo._id} className="d-grid col-6 mb-2 create-btn">
-                  <h3 className="btn btn-primary"><input type="checkbox"/> {todo.todo}</h3>
+                  <span className="btn btn-primary">
+                    <input type="checkbox" /> {todo.todo}{" "}
+                    <span className="fas fa-trash-alt ps-5" onClick={() => onDeleteHandler(todo._id)}></span>
+                  </span>
                 </div>
               );
             })
