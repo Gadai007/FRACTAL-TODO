@@ -10,6 +10,14 @@ const getTodoById = async (req, res, next, id ) => {
     }
 }
 
+const getATodo = async ( req, res )=> {
+    const todos = await Todo.findOne({ _id: req.todo._id }).populate('bucket', '_id name')
+    if(todos){
+        res.status(200).json(todos)
+    }else{
+        res.status(400).json({ error: 'Todos not found'})
+    }
+}
 const getTodos = async ( req, res )=> {
     const todos = await Todo.find({ bucket: { _id: req.bucket._id}}).populate('bucket', '_id name')
     if(todos){
@@ -50,6 +58,7 @@ const deleteTodo = async ( req, res) => {
 
 module.exports = {
     getTodoById,
+    getATodo,
     getTodos,
     createTodo,
     updateTodo,

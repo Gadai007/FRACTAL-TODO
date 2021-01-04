@@ -38,6 +38,18 @@ export const createBucket = (userId, token, bucket) => {
     }).catch(err => console.log(err))
 }
 
+export const getATodo = (userId, token, bucketId, todoId) => {
+    return fetch(`/api/atodo/${todoId}/${bucketId}/${userId}`, {
+        method: 'GET',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
+        return response.json()
+    }).catch(err => console.log(err))
+}
 export const getTodos = (userId, token, bucketId) => {
     return fetch(`/api/todos/${bucketId}/${userId}`, {
         method: 'GET',

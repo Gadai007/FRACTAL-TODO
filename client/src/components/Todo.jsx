@@ -5,7 +5,7 @@ import {
   getTodos,
   deleteTodo,
   getABucket,
-  updateTodo,
+  getATodo
 } from "./helper/coreapicalls";
 import { isAuthenticate } from "../auth/index";
 import { toast } from "react-toastify";
@@ -16,7 +16,9 @@ toast.configure();
 const Todo = (props) => {
   const [todos, setTodos] = useState([]);
   const [bucketName, setBucketName] = useState({});
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState({
+    todo: ''
+  });
   const [reload, setReload] = useState(false);
 
   const { user, token } = isAuthenticate();
@@ -36,7 +38,6 @@ const Todo = (props) => {
       if (response.error) {
         console.log(response.error);
       } else {
-        console.log(response);
         setBucketName(response);
       }
     });
@@ -51,8 +52,10 @@ const Todo = (props) => {
   }, [reload]);
 
   const onChangeHandler = (event) => {
-    const { value } = event.target;
-    setTodo(value);
+    const { name ,value } = event.target;
+    setTodo(preValue => {
+      return {...preValue, [name]: value}
+    });
   };
 
   const onError = (error) => {
@@ -61,12 +64,14 @@ const Todo = (props) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    createTodo(user.id, token, props.match.params.bucketId, { todo }).then(
+    createTodo(user.id, token, props.match.params.bucketId, todo).then(
       (response) => {
         if (response.error) {
           onError(response.error);
         } else {
-          setTodo("");
+          setTodo(preValue => {
+            return {...preValue, todo: ''}
+          });
           setReload(!reload);
         }
       }
@@ -79,10 +84,19 @@ const Todo = (props) => {
         if (response.error) {
           console.log(response.error);
         } else {
-          setReload(!reload)
+          setReload(!reload);
         }
       }
     );
+  };
+
+  const onUpdateHandler = (todoId) => {
+    getATodo(user.id, token, props.match.params.bucketId, todoId).then(response => {
+      setTodo(preValue => {
+        return {...preValue, todo: response.todo}
+      })
+    })
+    onDeleteHandler(todoId)
   };
 
   const bucketForm = () => {
@@ -93,7 +107,7 @@ const Todo = (props) => {
           type="text"
           id="todo"
           name="todo"
-          value={todo}
+          value={todo.todo}
           onChange={onChangeHandler}
           className="form-control"
           placeholder="Create your todo"
@@ -123,8 +137,13 @@ const Todo = (props) => {
               return (
                 <div key={todo._id} className="d-grid col-6 mb-2 create-btn">
                   <span className="btn btn-primary">
-                    <input type="checkbox" /> {todo.todo}{" "}
-                    <span className="fas fa-trash-alt ps-5" onClick={() => onDeleteHandler(todo._id)}></span>
+                    <input type="checkbox" /> {todo.todo}
+                    {"  "}
+                    <span className="fas fa-pen ps-5" onClick={() => onUpdateHandler(todo._id)}></span>
+                    <span
+                      className="fas fa-trash-alt ps-3"
+                      onClick={() => onDeleteHandler(todo._id)}
+                    ></span>
                   </span>
                 </div>
               );
